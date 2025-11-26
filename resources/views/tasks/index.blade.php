@@ -17,6 +17,12 @@
         </div>
     @endif
 
+    <div class="mb-3 btn-group">
+        <a href="{{ route('tasks.index') }}" class="btn btn-outline-secondary {{ !request('status') ? 'active' : '' }}">Toutes</a>
+        <a href="{{ route('tasks.index', ['status' => 'active']) }}" class="btn btn-outline-success {{ request('status') === 'active' ? 'active' : '' }}">Actives</a>
+        <a href="{{ route('tasks.index', ['status' => 'inactive']) }}" class="btn btn-outline-danger {{ request('status') === 'inactive' ? 'active' : '' }}">Inactives</a>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <table class="table table-hover">
