@@ -60,6 +60,8 @@
        </thead>
        <tbody>
        <tr><td><a href="Auth/EmailVerificationNotificationController.php.html#9">App\Http\Controllers\Auth\EmailVerificationNotificationController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CalendarController.php.html#9">App\Http\Controllers\CalendarController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#11">App\Http\Controllers\TaskController</a></td><td class="text-right">53%</td></tr>
        <tr><td><a href="Auth/EmailVerificationPromptController.php.html#10">App\Http\Controllers\Auth\EmailVerificationPromptController</a></td><td class="text-right">66%</td></tr>
        <tr><td><a href="Auth/VerifyEmailController.php.html#11">App\Http\Controllers\Auth\VerifyEmailController</a></td><td class="text-right">83%</td></tr>
 
@@ -78,6 +80,8 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="TaskController.php.html#11">App\Http\Controllers\TaskController</a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="CalendarController.php.html#9">App\Http\Controllers\CalendarController</a></td><td class="text-right">30</td></tr>
        <tr><td><a href="Auth/EmailVerificationNotificationController.php.html#9">App\Http\Controllers\Auth\EmailVerificationNotificationController</a></td><td class="text-right">6</td></tr>
        <tr><td><a href="Auth/VerifyEmailController.php.html#11">App\Http\Controllers\Auth\VerifyEmailController</a></td><td class="text-right">3</td></tr>
        <tr><td><a href="Auth/EmailVerificationPromptController.php.html#10">App\Http\Controllers\Auth\EmailVerificationPromptController</a></td><td class="text-right">2</td></tr>
@@ -119,8 +123,12 @@
        </thead>
        <tbody>
        <tr><td><a href="Auth/EmailVerificationNotificationController.php.html#14"><abbr title="App\Http\Controllers\Auth\EmailVerificationNotificationController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CalendarController.php.html#11"><abbr title="App\Http\Controllers\CalendarController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CalendarController.php.html#42"><abbr title="App\Http\Controllers\CalendarController::getTeamColor">getTeamColor</abbr></a></td><td class="text-right">0%</td></tr>
        <tr><td><a href="TaskController.php.html#13"><abbr title="App\Http\Controllers\TaskController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="TaskController.php.html#57"><abbr title="App\Http\Controllers\TaskController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#110"><abbr title="App\Http\Controllers\TaskController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="TaskController.php.html#117"><abbr title="App\Http\Controllers\TaskController::update">update</abbr></a></td><td class="text-right">56%</td></tr>
+       <tr><td><a href="TaskController.php.html#37"><abbr title="App\Http\Controllers\TaskController::store">store</abbr></a></td><td class="text-right">57%</td></tr>
        <tr><td><a href="Auth/EmailVerificationPromptController.php.html#15"><abbr title="App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke">__invoke</abbr></a></td><td class="text-right">66%</td></tr>
        <tr><td><a href="Auth/VerifyEmailController.php.html#16"><abbr title="App\Http\Controllers\Auth\VerifyEmailController::__invoke">__invoke</abbr></a></td><td class="text-right">83%</td></tr>
 
@@ -139,6 +147,10 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="TaskController.php.html#37"><abbr title="App\Http\Controllers\TaskController::store">store</abbr></a></td><td class="text-right">25</td></tr>
+       <tr><td><a href="TaskController.php.html#117"><abbr title="App\Http\Controllers\TaskController::update">update</abbr></a></td><td class="text-right">24</td></tr>
+       <tr><td><a href="CalendarController.php.html#11"><abbr title="App\Http\Controllers\CalendarController::index">index</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="TaskController.php.html#13"><abbr title="App\Http\Controllers\TaskController::index">index</abbr></a></td><td class="text-right">20</td></tr>
        <tr><td><a href="Auth/EmailVerificationNotificationController.php.html#14"><abbr title="App\Http\Controllers\Auth\EmailVerificationNotificationController::store">store</abbr></a></td><td class="text-right">6</td></tr>
        <tr><td><a href="Auth/VerifyEmailController.php.html#16"><abbr title="App\Http\Controllers\Auth\VerifyEmailController::__invoke">__invoke</abbr></a></td><td class="text-right">3</td></tr>
        <tr><td><a href="Auth/EmailVerificationPromptController.php.html#15"><abbr title="App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke">__invoke</abbr></a></td><td class="text-right">2</td></tr>
@@ -151,7 +163,7 @@
    <footer>
     <hr/>
     <p>
-     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 11.0.11</a> using <a href="https://www.php.net/" target="_top">PHP 8.4.15</a> and <a href="https://phpunit.de/">PHPUnit 11.5.44</a> at Wed Nov 26 14:50:20 CET 2025.</small>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 11.0.11</a> using <a href="https://www.php.net/" target="_top">PHP 8.4.12</a> and <a href="https://phpunit.de/">PHPUnit 11.5.44</a> at Wed Nov 26 16:52:52 CET 2025.</small>
     </p>
    </footer>
   </div>
@@ -170,7 +182,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,1,0,1,1,8], "Class Coverage"))
+      .datum(getCoverageDistributionData([2,0,0,0,0,0,1,1,0,1,0,8], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -188,7 +200,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([3,0,0,0,0,0,0,1,0,1,0,19], "Method Coverage"))
+      .datum(getCoverageDistributionData([5,0,0,0,0,0,2,1,0,1,0,17], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -238,7 +250,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,3,"<a href=\"Auth\/AuthenticatedSessionController.php.html#12\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController<\/a>"],[100,3,"<a href=\"Auth\/ConfirmablePasswordController.php.html#12\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController<\/a>"],[0,2,"<a href=\"Auth\/EmailVerificationNotificationController.php.html#9\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController<\/a>"],[66.66666666666666,2,"<a href=\"Auth\/EmailVerificationPromptController.php.html#10\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController<\/a>"],[100,3,"<a href=\"Auth\/NewPasswordController.php.html#16\">App\\Http\\Controllers\\Auth\\NewPasswordController<\/a>"],[100,1,"<a href=\"Auth\/PasswordController.php.html#11\">App\\Http\\Controllers\\Auth\\PasswordController<\/a>"],[100,3,"<a href=\"Auth\/PasswordResetLinkController.php.html#11\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController<\/a>"],[100,2,"<a href=\"Auth\/RegisteredUserController.php.html#15\">App\\Http\\Controllers\\Auth\\RegisteredUserController<\/a>"],[83.33333333333334,3,"<a href=\"Auth\/VerifyEmailController.php.html#11\">App\\Http\\Controllers\\Auth\\VerifyEmailController<\/a>"],[100,0,"<a href=\"Controller.php.html#5\">App\\Http\\Controllers\\Controller<\/a>"],[100,4,"<a href=\"ProfileController.php.html#12\">App\\Http\\Controllers\\ProfileController<\/a>"],[92,9,"<a href=\"TaskController.php.html#11\">App\\Http\\Controllers\\TaskController<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[100,3,"<a href=\"Auth\/AuthenticatedSessionController.php.html#12\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController<\/a>"],[100,3,"<a href=\"Auth\/ConfirmablePasswordController.php.html#12\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController<\/a>"],[0,2,"<a href=\"Auth\/EmailVerificationNotificationController.php.html#9\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController<\/a>"],[66.66666666666666,2,"<a href=\"Auth\/EmailVerificationPromptController.php.html#10\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController<\/a>"],[100,3,"<a href=\"Auth\/NewPasswordController.php.html#16\">App\\Http\\Controllers\\Auth\\NewPasswordController<\/a>"],[100,1,"<a href=\"Auth\/PasswordController.php.html#11\">App\\Http\\Controllers\\Auth\\PasswordController<\/a>"],[100,3,"<a href=\"Auth\/PasswordResetLinkController.php.html#11\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController<\/a>"],[100,2,"<a href=\"Auth\/RegisteredUserController.php.html#15\">App\\Http\\Controllers\\Auth\\RegisteredUserController<\/a>"],[83.33333333333334,3,"<a href=\"Auth\/VerifyEmailController.php.html#11\">App\\Http\\Controllers\\Auth\\VerifyEmailController<\/a>"],[0,5,"<a href=\"CalendarController.php.html#9\">App\\Http\\Controllers\\CalendarController<\/a>"],[100,0,"<a href=\"Controller.php.html#5\">App\\Http\\Controllers\\Controller<\/a>"],[100,4,"<a href=\"ProfileController.php.html#12\">App\\Http\\Controllers\\ProfileController<\/a>"],[53.91304347826087,32,"<a href=\"TaskController.php.html#11\">App\\Http\\Controllers\\TaskController<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -262,7 +274,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"Auth\/AuthenticatedSessionController.php.html#17\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::create<\/a>"],[100,1,"<a href=\"Auth\/AuthenticatedSessionController.php.html#25\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::store<\/a>"],[100,1,"<a href=\"Auth\/AuthenticatedSessionController.php.html#37\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::destroy<\/a>"],[100,1,"<a href=\"Auth\/ConfirmablePasswordController.php.html#17\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController::show<\/a>"],[100,2,"<a href=\"Auth\/ConfirmablePasswordController.php.html#25\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController::store<\/a>"],[0,2,"<a href=\"Auth\/EmailVerificationNotificationController.php.html#14\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController::store<\/a>"],[66.66666666666666,2,"<a href=\"Auth\/EmailVerificationPromptController.php.html#15\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController::__invoke<\/a>"],[100,1,"<a href=\"Auth\/NewPasswordController.php.html#21\">App\\Http\\Controllers\\Auth\\NewPasswordController::create<\/a>"],[100,2,"<a href=\"Auth\/NewPasswordController.php.html#31\">App\\Http\\Controllers\\Auth\\NewPasswordController::store<\/a>"],[100,1,"<a href=\"Auth\/PasswordController.php.html#16\">App\\Http\\Controllers\\Auth\\PasswordController::update<\/a>"],[100,1,"<a href=\"Auth\/PasswordResetLinkController.php.html#16\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController::create<\/a>"],[100,2,"<a href=\"Auth\/PasswordResetLinkController.php.html#26\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController::store<\/a>"],[100,1,"<a href=\"Auth\/RegisteredUserController.php.html#20\">App\\Http\\Controllers\\Auth\\RegisteredUserController::create<\/a>"],[100,1,"<a href=\"Auth\/RegisteredUserController.php.html#30\">App\\Http\\Controllers\\Auth\\RegisteredUserController::store<\/a>"],[83.33333333333334,3,"<a href=\"Auth\/VerifyEmailController.php.html#16\">App\\Http\\Controllers\\Auth\\VerifyEmailController::__invoke<\/a>"],[100,1,"<a href=\"ProfileController.php.html#17\">App\\Http\\Controllers\\ProfileController::edit<\/a>"],[100,2,"<a href=\"ProfileController.php.html#27\">App\\Http\\Controllers\\ProfileController::update<\/a>"],[100,1,"<a href=\"ProfileController.php.html#43\">App\\Http\\Controllers\\ProfileController::destroy<\/a>"],[0,1,"<a href=\"TaskController.php.html#13\">App\\Http\\Controllers\\TaskController::index<\/a>"],[100,1,"<a href=\"TaskController.php.html#20\">App\\Http\\Controllers\\TaskController::create<\/a>"],[100,3,"<a href=\"TaskController.php.html#27\">App\\Http\\Controllers\\TaskController::store<\/a>"],[0,1,"<a href=\"TaskController.php.html#57\">App\\Http\\Controllers\\TaskController::edit<\/a>"],[100,2,"<a href=\"TaskController.php.html#64\">App\\Http\\Controllers\\TaskController::update<\/a>"],[100,1,"<a href=\"TaskController.php.html#93\">App\\Http\\Controllers\\TaskController::deactivate<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"Auth\/AuthenticatedSessionController.php.html#17\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::create<\/a>"],[100,1,"<a href=\"Auth\/AuthenticatedSessionController.php.html#25\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::store<\/a>"],[100,1,"<a href=\"Auth\/AuthenticatedSessionController.php.html#37\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::destroy<\/a>"],[100,1,"<a href=\"Auth\/ConfirmablePasswordController.php.html#17\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController::show<\/a>"],[100,2,"<a href=\"Auth\/ConfirmablePasswordController.php.html#25\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController::store<\/a>"],[0,2,"<a href=\"Auth\/EmailVerificationNotificationController.php.html#14\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController::store<\/a>"],[66.66666666666666,2,"<a href=\"Auth\/EmailVerificationPromptController.php.html#15\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController::__invoke<\/a>"],[100,1,"<a href=\"Auth\/NewPasswordController.php.html#21\">App\\Http\\Controllers\\Auth\\NewPasswordController::create<\/a>"],[100,2,"<a href=\"Auth\/NewPasswordController.php.html#31\">App\\Http\\Controllers\\Auth\\NewPasswordController::store<\/a>"],[100,1,"<a href=\"Auth\/PasswordController.php.html#16\">App\\Http\\Controllers\\Auth\\PasswordController::update<\/a>"],[100,1,"<a href=\"Auth\/PasswordResetLinkController.php.html#16\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController::create<\/a>"],[100,2,"<a href=\"Auth\/PasswordResetLinkController.php.html#26\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController::store<\/a>"],[100,1,"<a href=\"Auth\/RegisteredUserController.php.html#20\">App\\Http\\Controllers\\Auth\\RegisteredUserController::create<\/a>"],[100,1,"<a href=\"Auth\/RegisteredUserController.php.html#30\">App\\Http\\Controllers\\Auth\\RegisteredUserController::store<\/a>"],[83.33333333333334,3,"<a href=\"Auth\/VerifyEmailController.php.html#16\">App\\Http\\Controllers\\Auth\\VerifyEmailController::__invoke<\/a>"],[0,4,"<a href=\"CalendarController.php.html#11\">App\\Http\\Controllers\\CalendarController::index<\/a>"],[0,1,"<a href=\"CalendarController.php.html#42\">App\\Http\\Controllers\\CalendarController::getTeamColor<\/a>"],[100,1,"<a href=\"ProfileController.php.html#17\">App\\Http\\Controllers\\ProfileController::edit<\/a>"],[100,2,"<a href=\"ProfileController.php.html#27\">App\\Http\\Controllers\\ProfileController::update<\/a>"],[100,1,"<a href=\"ProfileController.php.html#43\">App\\Http\\Controllers\\ProfileController::destroy<\/a>"],[0,4,"<a href=\"TaskController.php.html#13\">App\\Http\\Controllers\\TaskController::index<\/a>"],[100,1,"<a href=\"TaskController.php.html#30\">App\\Http\\Controllers\\TaskController::create<\/a>"],[57.99999999999999,13,"<a href=\"TaskController.php.html#37\">App\\Http\\Controllers\\TaskController::store<\/a>"],[0,1,"<a href=\"TaskController.php.html#110\">App\\Http\\Controllers\\TaskController::edit<\/a>"],[56.00000000000001,12,"<a href=\"TaskController.php.html#117\">App\\Http\\Controllers\\TaskController::update<\/a>"],[100,1,"<a href=\"TaskController.php.html#192\">App\\Http\\Controllers\\TaskController::deactivate<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
