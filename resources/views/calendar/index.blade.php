@@ -94,7 +94,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: @json($events)
+                events: {!! json_encode($events) !!}
             });
             calendar.render();
         });
