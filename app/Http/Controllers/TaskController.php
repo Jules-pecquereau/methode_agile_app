@@ -10,9 +10,19 @@ use Illuminate\View\View;
 
 class TaskController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $tasks = Task::with('teams')->latest()->paginate(15);
+        $query = Task::with('teams')->latest();
+
+        if ($request->has('status')) {
+            if ($request->status === 'active') {
+                $query->where('active', true);
+            } elseif ($request->status === 'inactive') {
+                $query->where('active', false);
+            }
+        }
+
+        $tasks = $query->paginate(15);
 
         return view('tasks.index', compact('tasks'));
     }
