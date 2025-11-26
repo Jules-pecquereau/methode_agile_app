@@ -51,7 +51,7 @@ class Task extends Model
      */
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class);
+        return $this->belongsToMany(Team::class)->withPivot(['start_date', 'end_date']);
     }
 
     public function canBeActive(): bool

@@ -1,0 +1,25 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Team;
+use Illuminate\Support\Facades\Schema;
+
+class TeamSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        // Optionally clear existing teams
+        Schema::disableForeignKeyConstraints();
+        Team::truncate();
+        Schema::enableForeignKeyConstraints();
+
+
+        // Create 7 additional random teams via factory
+        Team::factory()->count(7)->create();
+    }
+}
