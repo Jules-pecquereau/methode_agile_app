@@ -39,9 +39,9 @@ class CalendarController extends Controller
                 if ($task->pivot->start_date && $task->pivot->end_date) {
                     $events[] = [
                         'title' => $team->name . ' : ' . $task->name,
-                        'start' => $task->pivot->start_date,
-                        'end' => $task->pivot->end_date,
-                        'allDay' => false, // Or true depending on needs
+                        'start' => \Carbon\Carbon::parse($task->pivot->start_date)->toIso8601String(),
+                        'end' => \Carbon\Carbon::parse($task->pivot->end_date)->toIso8601String(),
+                        'allDay' => false,
                     ];
                 }
             }
@@ -65,10 +65,20 @@ class CalendarController extends Controller
         $start = \Carbon\Carbon::parse($validated['start_date'] . ' ' . $validated['start_time']);
         $end = $start->copy()->addMinutes($task->expected_minutes);
 
-        $team->tasks()->updateExistingPivot($task->id, [
-            'start_date' => $start,
-            'end_date' => $end,
+        // Debug log
+        \Illuminate\Support\Facades\Log::info('Scheduling task', [
+            'team_id' => $team->id,
+            'task_id' => $task->id,
+            'start' => $start->toDateTimeString(),
+            'end' => $end->toDateTimeString()
         ]);
+
+        $result = $team->tasks()->updateExistingPivot($task->id, [
+            'start_date' => $start->toDateTimeString(),
+            'end_date' => $end->toDateTimeString(),
+        ]);
+        
+        \Illuminate\Support\Facades\Log::info('Update result: ' . $result);
 
         return redirect()->route('calendar')->with('success', 'Tâche planifiée avec succès.');
     }
