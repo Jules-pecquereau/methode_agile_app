@@ -29,7 +29,7 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
-                'email' => 'test@example.com',
+                'email' => 'unique_test_email@example.com',
             ]);
 
         $response
@@ -39,7 +39,7 @@ class ProfileTest extends TestCase
         $user->refresh();
 
         $this->assertSame('Test User', $user->name);
-        $this->assertSame('test@example.com', $user->email);
+        $this->assertSame('unique_test_email@example.com', $user->email);
         $this->assertNull($user->email_verified_at);
     }
 
@@ -91,7 +91,7 @@ class ProfileTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasErrorsIn('userDeletion', 'password')
+            ->assertSessionHasErrorsIn('userDeletion', 'password') // Correction ici : spécifier le sac d'erreurs 'userDeletion'
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());

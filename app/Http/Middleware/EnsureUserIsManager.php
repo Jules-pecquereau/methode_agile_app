@@ -10,10 +10,10 @@ class EnsureUserIsManager
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // TODO: Temporaire pour les tests - à réactiver quand l'auth sera en place
-        // if (!auth()->check() || auth()->user()->role !== 'manager') {
-        //     abort(403, 'Accès réservé aux managers.');
-        // }
+        // Réactivation de la sécurité
+        if (! auth()->check() || auth()->user()->role !== 'manager') {
+            abort(403, 'Accès réservé aux managers.');
+        }
 
         return $next($request);
     }
