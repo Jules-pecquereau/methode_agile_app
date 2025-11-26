@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name
  * @property string|null $description
  * @property int $expected_minutes
+ * @property \Illuminate\Support\Carbon|null $start_at
  * @property bool $active
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Team> $teams
  * @property-read int|null $teams_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task query()
@@ -26,8 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereExpectedMinutes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereStartAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class Task extends Model
