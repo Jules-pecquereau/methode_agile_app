@@ -1,0 +1,87 @@
+{{-- filepath: c:\code\methode_agile_app\resources\views\tasks\index.blade.php --}}
+@extends('layouts.app')
+
+@section('content')
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestion des Tâches</h1>
+        <a href="{{ route('tasks.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nouvelle Tâche
+        </a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Durée estimée</th>
+                        <th>Équipes</th>
+                        <th>Statut</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($tasks as $task)
+                        <tr>
+                            <td>
+                                <strong>{{ $task->name }}</strong>
+                                @if($task->description)
+                                    <br><small class="text-muted">{{ Str::limit($task->description, 60) }}</small>
+                                @endif
+                            </td>
+                            <td>{{ $task->expected_minutes }} min</td>
+                            <td>
+                                @foreach($task->teams as $team)
+                                    <span class="badge bg-info">{{ $team->name }}</span>
+                                @endforeach
+                                @if($task->teams->isEmpty())
+                                    <span class="text-muted">Aucune</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($task->active)
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-secondary">Inactive</span>
+                                @endif
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-warning">
+                                    Modifier
+                                </a>
+                                @if($task->active)
+                                    <form action="{{ route('tasks.deactivate', $task) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Désactiver cette tâche ?')">
+                                            Désactiver
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">Aucune tâche trouvée.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        {{ $tasks->links() }}
+    </div>
+</div>
+@endsection
