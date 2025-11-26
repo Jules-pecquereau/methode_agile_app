@@ -20,9 +20,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // Seed teams
+        // Seed teams and admin user
         $this->call([
             TeamSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }
