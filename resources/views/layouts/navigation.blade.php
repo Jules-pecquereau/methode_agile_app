@@ -76,6 +76,9 @@
             <x-responsive-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.*')">
                 {{ __('Tasks') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
+                {{ __('Calendar') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

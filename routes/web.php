@@ -34,6 +34,11 @@ Route::get('/debug-calendar', function () {
     });
 });
 
+Route::middleware(['auth', 'manager'])->group(function () {
+    Route::resource('tasks', TaskController::class)->except(['destroy', 'show']);
+    Route::patch('tasks/{task}/deactivate', [TaskController::class, 'deactivate'])->name('tasks.deactivate');
+});
+
 require __DIR__.'/auth.php';
 
 

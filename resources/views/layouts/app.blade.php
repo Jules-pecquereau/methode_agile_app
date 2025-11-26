@@ -24,7 +24,7 @@
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
     <body class="font-sans antialiased">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom">
+        <nav class="bg-white shadow-sm navbar navbar-expand-lg navbar-light border-bottom">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -34,14 +34,14 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="mb-2 navbar-nav me-auto mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('home') }}">Accueil</a>
                         </li>
+                        @if(auth()->user())
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('calendar.index') }}">Calendrier</a>
                         </li>
-                        @if(auth()->user() && auth()->user()->role === 'manager')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('tasks.index') }}">Tâches</a>
                         </li>

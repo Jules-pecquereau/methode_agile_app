@@ -162,9 +162,9 @@
                         <div class="alert alert-light border" role="alert">
                             <strong><i class="bi bi-clock-history"></i> Informations :</strong>
                             <ul class="mb-0 mt-2">
-                                <li>Créée le : <strong>{{ $task->created_at->translatedFormat('d F Y à H:i') }}</strong></li>
-                                <li>Dernière modification : <strong>{{ $task->updated_at->translatedFormat('d F Y à H:i') }}</strong></li>
-                                <li>Il y a : <strong>{{ $task->updated_at->diffForHumans() }}</strong></li>
+                                <li>Créée le : <strong>{{ $task->created_at?->translatedFormat('d F Y à H:i') }}</strong></li>
+                                <li>Dernière modification : <strong>{{ $task->updated_at?->translatedFormat('d F Y à H:i') }}</strong></li>
+                                <li>Il y a : <strong>{{ $task->updated_at?->diffForHumans() }}</strong></li>
                             </ul>
                         </div>
 
