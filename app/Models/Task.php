@@ -37,11 +37,13 @@ class Task extends Model
         'description',
         'expected_minutes',
         'active',
+        'start_at',
     ];
 
     protected $casts = [
         'active' => 'boolean',
         'expected_minutes' => 'integer',
+        'start_at' => 'datetime',
     ];
 
     public $timestamps = true;
@@ -75,5 +77,56 @@ class Task extends Model
         $date->locale('fr_FR');
 
         return $date;
+    }
+
+    /**
+     * Calcule les segments de temps occupés par la tâche, en excluant les week-ends.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getTimeSegments()
+    {
+        if (!$this->start_at || !$this->expected_minutes) {
+            return collect();
+        }
+
+        $segments = collect();
+        $remainingMinutes = $this->expected_minutes;
+        $currentStart = $this->start_at->copy();
+
+        while ($remainingMinutes > 0) {
+            // Si on tombe sur un week-end, on avance au lundi suivant 00:00
+            if ($currentStart->isWeekend()) {
+                $currentStart->next(Carbon::MONDAY)->startOfDay();
+            }
+
+            // Trouver le prochain samedi 00:00 (début du week-end)
+            $nextWeekend = $currentStart->copy()->next(Carbon::SATURDAY)->startOfDay();
+
+            // Calculer le temps disponible avant le week-end
+            $minutesUntilWeekend = $currentStart->diffInMinutes($nextWeekend, false);
+
+            // Si le temps restant tient avant le week-end
+            if ($remainingMinutes <= $minutesUntilWeekend) {
+                $end = $currentStart->copy()->addMinutes($remainingMinutes);
+                $segments->push([
+                    'start' => $currentStart->copy(),
+                    'end' => $end->copy(),
+                ]);
+                $remainingMinutes = 0;
+            } else {
+                // La tâche dépasse le week-end, on coupe au vendredi soir
+                $segments->push([
+                    'start' => $currentStart->copy(),
+                    'end' => $nextWeekend->copy(),
+                ]);
+
+                $remainingMinutes -= $minutesUntilWeekend;
+                // On reprend le lundi suivant
+                $currentStart = $nextWeekend->copy()->addDays(2);
+            }
+        }
+
+        return $segments;
     }
 }
