@@ -5,7 +5,7 @@
     <!-- Hero Section -->
     <div class="p-5 mb-4 bg-white border shadow-sm rounded-3">
         <div class="py-3 container-fluid">
-            <h1 class="display-5 fw-bold text-primary">Gestion de Planning</h1>
+            <h1 class="display-5 fw-bold text-primary">Gestion de Planning et Équipe</h1>
             <div class="gap-3 mt-4 d-flex">
                 <a href="{{ route('tasks.index') }}" class="px-4 shadow-sm btn btn-primary btn-lg">
                     <i class="bi bi-list-check me-2"></i> Voir mes tâches
