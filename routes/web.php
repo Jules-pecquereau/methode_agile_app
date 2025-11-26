@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\CalendarController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,9 +15,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['manager'])->group(function () {
+// Route::middleware(['manager'])->group(function () {
     Route::resource('tasks', TaskController::class)->except(['destroy', 'show']);
     Route::patch('tasks/{task}/deactivate', [TaskController::class, 'deactivate'])->name('tasks.deactivate');
-});
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::post('/calendar/schedule', [CalendarController::class, 'schedule'])->name('calendar.schedule');
+// });
 
 require __DIR__.'/auth.php';
+
+
+
+
