@@ -2,84 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Team;
+use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class CalendarController extends Controller
 {
     public function index()
     {
-        // if (!Auth::check() || Auth::user()->role !== 'manager') {
-        //     abort(403, 'Accès réservé aux managers.');
-        // }
+        // Récupérer les tâches qui ont une date de début
+        $tasks = Task::whereNotNull('start_at')
+            ->where('active', true)
+            ->with('teams')
+            ->get();
 
-        $teams = Team::with('tasks')->get();
+        $events = collect();
 
-        // Préparer une liste plate de toutes les tâches assignées aux équipes
-        $schedulableTasks = [];
-        foreach ($teams as $team) {
-            foreach ($team->tasks as $task) {
-                // On affiche toutes les tâches pour le moment pour déboguer
-                // if ($task->active) {
-                    $schedulableTasks[] = [
-                        'team_id' => $team->id,
-                        'task_id' => $task->id,
-                        'label' => $task->name . ' (' . $team->name . ') - ' . $task->expected_minutes . ' min' . ($task->active ? '' : ' [Inactif]'),
-                        'minutes' => $task->expected_minutes
-                    ];
-                // }
+        foreach ($tasks as $task) {
+            $teamId = $task->teams->first()->id ?? 0;
+            $color = $this->getTeamColor($teamId);
+
+            foreach ($task->getTimeSegments() as $segment) {
+                $events->push([
+                    'id' => $task->id,
+                    'title' => $task->name . ($task->teams->isNotEmpty() ? ' (' . $task->teams->pluck('name')->join(', ') . ')' : ''),
+                    'start' => $segment['start']->toIso8601String(),
+                    'end' => $segment['end']->toIso8601String(),
+                    'backgroundColor' => $color,
+                    'borderColor' => $color,
+                    'allDay' => false,
+                    'url' => route('tasks.edit', ['task' => $task->id, 'from' => 'calendar']),
+                ]);
             }
         }
 
-        $events = [];
-
-        foreach ($teams as $team) {
-            foreach ($team->tasks as $task) {
-                if ($task->pivot->start_date && $task->pivot->end_date) {
-                    $events[] = [
-                        'title' => $team->name . ' : ' . $task->name,
-                        'start' => \Carbon\Carbon::parse($task->pivot->start_date)->toIso8601String(),
-                        'end' => \Carbon\Carbon::parse($task->pivot->end_date)->toIso8601String(),
-                        'allDay' => false,
-                    ];
-                }
-            }
-        }
-
-        return view('calendar.index', compact('events', 'schedulableTasks'));
+        return view('calendar.index', compact('events'));
     }
 
-    public function schedule(Request $request)
+    private function getTeamColor($teamId)
     {
-        $validated = $request->validate([
-            'team_id' => 'required|exists:teams,id',
-            'task_id' => 'required|exists:tasks,id',
-            'start_date' => 'required|date',
-            'start_time' => 'required',
-        ]);
-
-        $team = Team::findOrFail($validated['team_id']);
-        $task = $team->tasks()->findOrFail($validated['task_id']);
-
-        $start = \Carbon\Carbon::parse($validated['start_date'] . ' ' . $validated['start_time']);
-        $end = $start->copy()->addMinutes($task->expected_minutes);
-
-        // Debug log
-        \Illuminate\Support\Facades\Log::info('Scheduling task', [
-            'team_id' => $team->id,
-            'task_id' => $task->id,
-            'start' => $start->toDateTimeString(),
-            'end' => $end->toDateTimeString()
-        ]);
-
-        $result = $team->tasks()->updateExistingPivot($task->id, [
-            'start_date' => $start->toDateTimeString(),
-            'end_date' => $end->toDateTimeString(),
-        ]);
-        
-        \Illuminate\Support\Facades\Log::info('Update result: ' . $result);
-
-        return redirect()->route('calendar')->with('success', 'Tâche planifiée avec succès.');
+        $colors = ['#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#dc3545', '#fd7e14', '#ffc107', '#198754', '#20c997', '#0dcaf0'];
+        return $colors[$teamId % count($colors)];
     }
 }

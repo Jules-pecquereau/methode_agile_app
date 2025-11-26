@@ -23,6 +23,7 @@
                 <thead>
                     <tr>
                         <th>Nom</th>
+                        <th>Début</th>
                         <th>Durée estimée</th>
                         <th>Équipes</th>
                         <th>Statut</th>
@@ -36,6 +37,13 @@
                                 <strong>{{ $task->name }}</strong>
                                 @if($task->description)
                                     <br><small class="text-muted">{{ Str::limit($task->description, 60) }}</small>
+                                @endif
+                            </td>
+                            <td>
+                                @if($task->start_at)
+                                    {{ $task->start_at->format('d/m/Y H:i') }}
+                                @else
+                                    <span class="text-muted">-</span>
                                 @endif
                             </td>
                             <td>{{ $task->expected_minutes }} min</td>
@@ -72,7 +80,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Aucune tâche trouvée.</td>
+                            <td colspan="6" class="text-center text-muted">Aucune tâche trouvée.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -69,6 +69,32 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="start_at" class="form-label fw-bold">
+                                Date et heure de début
+                            </label>
+                            <input type="datetime-local"
+                                   class="form-control @error('start_at') is-invalid @enderror"
+                                   id="start_at"
+                                   name="start_at"
+                                   value="{{ old('start_at') }}">
+                            @error('start_at')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="form-text text-muted">Si renseigné, la tâche apparaîtra automatiquement dans le calendrier.</small>
+                        </div>
+
+                        <script>
+                            document.getElementById('start_at').addEventListener('change', function(e) {
+                                const date = new Date(this.value);
+                                const day = date.getDay();
+                                if (day === 0 || day === 6) {
+                                    alert('Les tâches ne peuvent pas être planifiées le week-end (Samedi ou Dimanche).');
+                                    this.value = '';
+                                }
+                            });
+                        </script>
+
+                        <div class="mb-4">
                             <label class="form-label fw-bold">
                                 Équipes associées <span class="text-danger">*</span>
                             </label>

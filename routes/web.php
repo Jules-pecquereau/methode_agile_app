@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
 // Route::middleware(['manager'])->group(function () {
     Route::resource('tasks', TaskController::class)->except(['destroy', 'show']);
     Route::patch('tasks/{task}/deactivate', [TaskController::class, 'deactivate'])->name('tasks.deactivate');
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/calendar', [CalendarController::class, 'index'])->middleware(['auth'])->name('calendar.index');
     Route::post('/calendar/schedule', [CalendarController::class, 'schedule'])->name('calendar.schedule');
 // });
 

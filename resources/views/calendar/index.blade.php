@@ -7,72 +7,21 @@
 
     <div class="py-5">
         <div class="container">
-
-            <!-- Formulaire de planification -->
-            <div class="mb-4 shadow-sm card">
-                <div class="card-body">
-                    <h3 class="mb-4 h5">Planifier une tâche</h3>
-
+            <div class="row">
+                <!-- Calendrier (Pleine largeur maintenant) -->
+                <div class="col-md-12">
                     @if(session('success'))
-                        <div class="mb-4 alert alert-success">
+                        <div class="mb-3 alert alert-success alert-dismissible fade show">
                             {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('calendar.schedule') }}"
-                          x-data="{
-                              selectedTaskIndex: '',
-                              tasks: @json($schedulableTasks)
-                          }"
-                          class="row g-3 align-items-end">
-                        @csrf
-
-                        <!-- Tâche à planifier -->
-                        <div class="col-md-4">
-                            <label for="task_select" class="form-label">Tâche à planifier</label>
-                            <select id="task_select" x-model="selectedTaskIndex" required class="form-select">
-                                <option value="">Choisir une tâche</option>
-                                @foreach($schedulableTasks as $index => $task)
-                                    <option value="{{ $index }}">{{ $task['label'] }}</option>
-                                @endforeach
-                            </select>
-                            @if(empty($schedulableTasks))
-                                <div class="text-danger small mt-1">Aucune tâche assignée à une équipe n'a été trouvée.</div>
-                            @endif
-
-                            <!-- Champs cachés pour envoyer les IDs -->
-                            <input type="hidden" name="team_id" :value="selectedTaskIndex !== '' ? tasks[selectedTaskIndex].team_id : ''">
-                            <input type="hidden" name="task_id" :value="selectedTaskIndex !== '' ? tasks[selectedTaskIndex].task_id : ''">
+                    <div class="shadow-sm card">
+                        <div class="p-0 card-body">
+                            <div id='calendar'></div>
                         </div>
-
-                        <!-- Date -->
-                        <div class="col-md">
-                            <label for="start_date" class="form-label">Date</label>
-                            <input type="date" name="start_date" id="start_date" required
-                                   class="form-control">
-                        </div>
-
-                        <!-- Heure de début -->
-                        <div class="col-md">
-                            <label for="start_time" class="form-label">Heure de début</label>
-                            <input type="time" name="start_time" id="start_time" required
-                                   class="form-control">
-                        </div>
-
-                        <!-- Bouton -->
-                        <div class="col-md">
-                            <button type="submit" class="btn btn-primary w-100">
-                                Planifier
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Calendrier -->
-            <div class="shadow-sm card">
-                <div class="card-body">
-                    <div id='calendar'></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,18 +34,41 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'timeGridWeek',
                 locale: 'fr',
-                firstDay: 1, // Lundi
+                firstDay: 1,
                 slotMinTime: '08:00:00',
                 slotMaxTime: '20:00:00',
                 allDaySlot: false,
+                slotEventOverlap: false,
+                height: 'auto',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: {!! json_encode($events) !!}
+                buttonText: {
+                    today: "Aujourd'hui",
+                    month: 'Mois',
+                    week: 'Semaine',
+                    day: 'Jour',
+                    list: 'Liste'
+                },
+                events: @json($events),
+                eventClick: function(info) {
+                    if (info.event.url) {
+                        window.location.href = info.event.url;
+                        info.jsEvent.preventDefault(); // Empêche le navigateur de suivre le lien immédiatement
+                    }
+                }
             });
             calendar.render();
         });
     </script>
+    <style>
+        .fc-event {
+            cursor: pointer;
+        }
+        .fc-toolbar-title {
+            font-size: 1.25rem !important;
+        }
+    </style>
 </x-app-layout>
