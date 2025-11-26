@@ -11,6 +11,6 @@ class Team extends Model
 
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Task::class)->withPivot(['start_date', 'end_date']);
     }
 }
