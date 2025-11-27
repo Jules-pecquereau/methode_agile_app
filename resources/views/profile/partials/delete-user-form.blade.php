@@ -6,7 +6,6 @@
         </p>
     </header>
 
-    @if(auth()->user()->role === 'manager')
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmUserDeletionModal">
         Supprimer le compte
     </button>
@@ -44,11 +43,6 @@
             </div>
         </div>
     </div>
-    @else
-    <div class="alert alert-warning small">
-        <i class="bi bi-exclamation-triangle me-2"></i>Seuls les managers peuvent supprimer un compte.
-    </div>
-    @endif
 
     @if($errors->userDeletion->isNotEmpty())
         <script>

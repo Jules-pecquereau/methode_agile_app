@@ -21,12 +21,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'manager',
         ]);
 
-        User::factory()->create([
-            'name' => 'Employee User',
-            'email' => 'employee@example.com',
-            'role' => 'user',
-        ]);
-
         // Seed teams and admin user
         $this->call([
             TeamSeeder::class,
