@@ -21,6 +21,7 @@
         <a href="{{ route('tasks.index') }}" class="btn btn-outline-secondary {{ !request('status') ? 'active' : '' }}">Toutes</a>
         <a href="{{ route('tasks.index', ['status' => 'active']) }}" class="btn btn-outline-success {{ request('status') === 'active' ? 'active' : '' }}">Actives</a>
         <a href="{{ route('tasks.index', ['status' => 'inactive']) }}" class="btn btn-outline-danger {{ request('status') === 'inactive' ? 'active' : '' }}">Inactives</a>
+        <a href="{{ route('tasks.index', ['status' => 'completed']) }}" class="btn btn-outline-info {{ request('status') === 'completed' ? 'active' : '' }}">Terminées</a>
     </div>
 
     <div class="card">
@@ -62,7 +63,12 @@
                                 @endif
                             </td>
                             <td>
-                                @if($task->active)
+                                @if($task->completed_at)
+                                    <span class="badge bg-info">
+                                        <i class="bi bi-check-circle"></i> Terminée
+                                    </span>
+                                    <br><small class="text-muted">{{ $task->completed_at->format('d/m/Y H:i') }}</small>
+                                @elseif($task->active)
                                     <span class="badge bg-success">Active</span>
                                 @else
                                     <span class="badge bg-secondary">Inactive</span>

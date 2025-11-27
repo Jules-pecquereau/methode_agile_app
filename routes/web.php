@@ -3,16 +3,28 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
 })->middleware(['auth'])->name('home');
 
+use App\Http\Controllers\EmployeeTaskController;
+use App\Http\Controllers\TaskCompletionController;
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('users', UserController::class);
+    Route::get('/my-tasks', [EmployeeTaskController::class, 'index'])->name('employee.tasks.index');
+    Route::get('/my-tasks/{task}', [EmployeeTaskController::class, 'show'])->name('employee.tasks.show');
+
+    // Routes de complétion des tâches
+    Route::post('/tasks/{task}/complete', [TaskCompletionController::class, 'complete'])->name('tasks.completion.complete');
+    Route::post('/tasks/{task}/uncomplete', [TaskCompletionController::class, 'uncomplete'])->name('tasks.completion.uncomplete');
 });
 
 // Route::middleware(['manager'])->group(function () {

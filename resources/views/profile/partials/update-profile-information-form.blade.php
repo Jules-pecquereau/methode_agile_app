@@ -16,7 +16,7 @@
 
         <div class="mb-3">
             <label for="name" class="form-label">Nom</label>
-            <input id="name" name="name" type="text" class="form-control" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name">
+            <input id="name" name="name" type="text" class="form-control" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" {{ auth()->user()->role !== 'manager' ? 'disabled' : '' }}>
             @error('name')
                 <div class="text-danger small mt-1">{{ $message }}</div>
             @enderror
@@ -24,7 +24,7 @@
 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input id="email" name="email" type="email" class="form-control" value="{{ old('email', $user->email) }}" required autocomplete="username">
+            <input id="email" name="email" type="email" class="form-control" value="{{ old('email', $user->email) }}" required autocomplete="username" {{ auth()->user()->role !== 'manager' ? 'disabled' : '' }}>
             @error('email')
                 <div class="text-danger small mt-1">{{ $message }}</div>
             @enderror
@@ -48,6 +48,7 @@
             @endif
         </div>
 
+        @if(auth()->user()->role === 'manager')
         <div class="d-flex align-items-center gap-3">
             <button type="submit" class="btn btn-primary">Enregistrer</button>
 
@@ -60,5 +61,10 @@
                 </script>
             @endif
         </div>
+        @else
+        <div class="alert alert-info small">
+            <i class="bi bi-info-circle me-2"></i>Seuls les managers peuvent modifier les informations de profil.
+        </div>
+        @endif
     </form>
 </section>
