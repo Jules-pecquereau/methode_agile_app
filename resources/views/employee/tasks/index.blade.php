@@ -7,18 +7,18 @@
 
     <div class="py-4" x-data="{ view: 'list' }">
         <div class="container">
-            
+
             <!-- View Toggle -->
             <div class="mb-4 d-flex justify-content-end">
                 <div class="btn-group" role="group">
-                    <button type="button" 
-                            @click="view = 'list'" 
+                    <button type="button"
+                            @click="view = 'list'"
                             :class="{ 'btn-primary': view === 'list', 'btn-outline-primary': view !== 'list' }"
                             class="btn">
                         <i class="bi bi-list-ul me-2"></i> Liste
                     </button>
-                    <button type="button" 
-                            @click="view = 'calendar'; setTimeout(() => calendar.render(), 100)" 
+                    <button type="button"
+                            @click="view = 'calendar'; setTimeout(() => calendar.render(), 100)"
                             :class="{ 'btn-primary': view === 'calendar', 'btn-outline-primary': view !== 'calendar' }"
                             class="btn">
                         <i class="bi bi-calendar3 me-2"></i> Calendrier
@@ -37,33 +37,37 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>Tâche</th>
-                                        <th>Équipe</th>
+                                        <th>Équipes</th>
                                         <th>Début</th>
-                                        <th>Fin</th>
+                                        <th>Durée</th>
                                         <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($tasks as $task)
-                                        @foreach($task->teams as $team)
-                                            <tr>
-                                                <td class="fw-bold">{{ $task->name }}</td>
-                                                <td>
-                                                    <span class="badge bg-info text-dark">
+                                        <tr style="cursor: pointer;" onclick="window.location='{{ route('employee.tasks.show', $task) }}'">
+                                            <td class="fw-bold">
+                                                <a href="{{ route('employee.tasks.show', $task) }}" class="text-decoration-none text-dark">
+                                                    {{ $task->name }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @foreach($task->teams as $team)
+                                                    <span class="badge bg-info text-dark me-1">
                                                         {{ $team->name }}
                                                     </span>
-                                                </td>
-                                                <td>
-                                                    {{ $team->pivot->start_date ? \Carbon\Carbon::parse($team->pivot->start_date)->format('d/m/Y H:i') : '-' }}
-                                                </td>
-                                                <td>
-                                                    {{ $team->pivot->end_date ? \Carbon\Carbon::parse($team->pivot->end_date)->format('d/m/Y H:i') : '-' }}
-                                                </td>
-                                                <td class="text-muted">
-                                                    {{ Str::limit($task->description, 50) }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                {{ $task->start_at ? $task->start_at->format('d/m/Y H:i') : '-' }}
+                                            </td>
+                                            <td>
+                                                {{ $task->expected_minutes }} min
+                                            </td>
+                                            <td class="text-muted">
+                                                {{ Str::limit($task->description, 50) }}
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

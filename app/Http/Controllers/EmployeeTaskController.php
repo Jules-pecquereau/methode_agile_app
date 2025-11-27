@@ -12,7 +12,7 @@ class EmployeeTaskController extends Controller
     public function index(Request $request): View
     {
         $user = Auth::user();
-        
+
         // Récupérer les IDs des équipes de l'utilisateur
         $teamIds = $user->teams->pluck('id');
 
@@ -26,22 +26,35 @@ class EmployeeTaskController extends Controller
         // Préparer les événements pour le calendrier
         $events = [];
         foreach ($tasks as $task) {
-            foreach ($task->teams as $team) {
-                if ($team->pivot->start_date && $team->pivot->end_date) {
-                    $events[] = [
-                        'title' => $task->name . ' (' . $team->name . ')',
-                        'start' => $team->pivot->start_date,
-                        'end' => $team->pivot->end_date,
-                        'description' => $task->description,
-                        'extendedProps' => [
-                            'team' => $team->name,
-                            'description' => $task->description
-                        ]
-                    ];
-                }
+            foreach ($task->getTimeSegments() as $segment) {
+                $events[] = [
+                    'title' => $task->name,
+                    'start' => $segment['start']->toIso8601String(),
+                    'end' => $segment['end']->toIso8601String(),
+                    'description' => $task->description,
+                    'url' => route('employee.tasks.show', $task),
+                    'extendedProps' => [
+                        'description' => $task->description
+                    ]
+                ];
             }
         }
 
         return view('employee.tasks.index', compact('tasks', 'events'));
+    }
+
+    public function show(Task $task): View
+    {
+        // Vérifier si l'utilisateur a le droit de voir cette tâche (si elle appartient à une de ses équipes)
+        $user = Auth::user();
+        $teamIds = $user->teams->pluck('id');
+        
+        $hasAccess = $task->teams()->whereIn('teams.id', $teamIds)->exists();
+        
+        if (!$hasAccess) {
+            abort(403, 'Vous n\'avez pas accès à cette tâche.');
+        }
+
+        return view('employee.tasks.show', compact('task'));
     }
 }

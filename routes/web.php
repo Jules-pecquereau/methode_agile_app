@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('users', UserController::class);
     Route::get('/my-tasks', [EmployeeTaskController::class, 'index'])->name('employee.tasks.index');
+    Route::get('/my-tasks/{task}', [EmployeeTaskController::class, 'show'])->name('employee.tasks.show');
 });
 
 // Route::middleware(['manager'])->group(function () {
