@@ -43,14 +43,14 @@
                             <a class="nav-link" href="{{ route('calendar.index') }}">Calendrier</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('tasks.index') }}">Tâches</a>
+                            <a class="nav-link" href="{{ route('employee.tasks.index') }}">Mes Tâches</a>
                         </li>
                         @if(auth()->user()->role === 'manager')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('users.index') }}">Salariés</a>
+                            <a class="nav-link" href="{{ route('tasks.index') }}">Gestion Tâches</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employee.tasks.index') }}">Mes Tâches</a>
+                            <a class="nav-link" href="{{ route('users.index') }}">Salariés</a>
                         </li>
                         @endif
                         @endif

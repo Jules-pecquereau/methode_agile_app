@@ -15,6 +15,8 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('home');
     })->name('profile.edit');
 
+    Route::get('/my-tasks', [App\Http\Controllers\EmployeeTaskController::class, 'index'])->name('employee.tasks.index');
+
     Route::middleware(['manager'])->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
