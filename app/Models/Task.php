@@ -38,14 +38,12 @@ class Task extends Model
         'expected_minutes',
         'active',
         'start_at',
-        'completed_at',
     ];
 
     protected $casts = [
         'active' => 'boolean',
         'expected_minutes' => 'integer',
         'start_at' => 'datetime',
-        'completed_at' => 'datetime',
     ];
 
     public $timestamps = true;

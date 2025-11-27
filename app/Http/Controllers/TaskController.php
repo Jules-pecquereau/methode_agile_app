@@ -16,11 +16,9 @@ class TaskController extends Controller
 
         if ($request->has('status')) {
             if ($request->status === 'active') {
-                $query->where('active', true)->whereNull('completed_at');
+                $query->where('active', true);
             } elseif ($request->status === 'inactive') {
-                $query->where('active', false)->whereNull('completed_at');
-            } elseif ($request->status === 'completed') {
-                $query->whereNotNull('completed_at');
+                $query->where('active', false);
             }
         }
 
