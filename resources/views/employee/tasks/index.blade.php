@@ -41,6 +41,7 @@
                                         <th>Début</th>
                                         <th>Durée</th>
                                         <th>Description</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +67,20 @@
                                             </td>
                                             <td class="text-muted">
                                                 {{ Str::limit($task->description, 50) }}
+                                            </td>
+                                            <td onclick="event.stopPropagation()">
+                                                @if($task->completed_at)
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle"></i> Terminée
+                                                    </span>
+                                                @else
+                                                    <form action="{{ route('tasks.completion.complete', $task) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Marquer comme terminée">
+                                                            <i class="bi bi-magic"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

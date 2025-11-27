@@ -11,6 +11,7 @@ Route::get('/', function () {
 })->middleware(['auth'])->name('home');
 
 use App\Http\Controllers\EmployeeTaskController;
+use App\Http\Controllers\TaskCompletionController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -20,6 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::get('/my-tasks', [EmployeeTaskController::class, 'index'])->name('employee.tasks.index');
     Route::get('/my-tasks/{task}', [EmployeeTaskController::class, 'show'])->name('employee.tasks.show');
+
+    // Routes de complétion des tâches
+    Route::post('/tasks/{task}/complete', [TaskCompletionController::class, 'complete'])->name('tasks.completion.complete');
+    Route::post('/tasks/{task}/uncomplete', [TaskCompletionController::class, 'uncomplete'])->name('tasks.completion.uncomplete');
 });
 
 // Route::middleware(['manager'])->group(function () {

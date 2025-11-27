@@ -16,10 +16,12 @@ class EmployeeTaskController extends Controller
         // Récupérer les IDs des équipes de l'utilisateur
         $teamIds = $user->teams->pluck('id');
 
-        // Récupérer les tâches associées à ces équipes
+        // Récupérer les tâches associées à ces équipes (seulement les non terminées)
         $tasks = Task::whereHas('teams', function ($query) use ($teamIds) {
             $query->whereIn('teams.id', $teamIds);
-        })->with(['teams' => function($query) use ($teamIds) {
+        })
+        ->whereNull('completed_at')
+        ->with(['teams' => function($query) use ($teamIds) {
             $query->whereIn('teams.id', $teamIds);
         }])->get();
 
@@ -48,9 +50,9 @@ class EmployeeTaskController extends Controller
         // Vérifier si l'utilisateur a le droit de voir cette tâche (si elle appartient à une de ses équipes)
         $user = Auth::user();
         $teamIds = $user->teams->pluck('id');
-        
+
         $hasAccess = $task->teams()->whereIn('teams.id', $teamIds)->exists();
-        
+
         if (!$hasAccess) {
             abort(403, 'Vous n\'avez pas accès à cette tâche.');
         }
