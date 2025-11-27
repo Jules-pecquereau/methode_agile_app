@@ -45,6 +45,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('tasks.index') }}">Tâches</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('users.index') }}">Salariés</a>
+                        </li>
                         @endif
                     </ul>
                     <ul class="navbar-nav ms-auto">
