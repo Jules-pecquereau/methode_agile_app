@@ -45,12 +45,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('tasks.index') }}">Tâches</a>
                         </li>
+                        @if(auth()->user()->role === 'manager')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">Salariés</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('employee.tasks.index') }}">Mes Tâches</a>
                         </li>
+                        @endif
                         @endif
                     </ul>
                     <ul class="navbar-nav ms-auto">
@@ -60,8 +62,8 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    {{-- <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a></li>
+                                    <li><hr class="dropdown-divider"></li> --}}
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
