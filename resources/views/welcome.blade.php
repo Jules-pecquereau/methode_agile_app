@@ -28,9 +28,9 @@
                             <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-indigo-600 font-medium">Tableau de bord</a>
                         @else
                             <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600 font-medium">Connexion</a>
-                            {{-- @if (Route::has('register'))
+                            @if (Route::has('register'))
                                 <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">Inscription</a>
-                            @endif --}}
+                            @endif
                         @endauth
                     @endif
                 </div>
@@ -45,7 +45,7 @@
                 Gérez vos projets <span class="text-indigo-600">Agiles</span> avec fluidité
             </h1>
             <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-                Une solution complète pour planifier, suivre et livrer vos projets en équipe.
+                Une solution complète pour planifier, suivre et livrer vos projets en équipe. 
                 Optimisez votre workflow et concentrez-vous sur l'essentiel.
             </p>
             <div class="flex justify-center gap-4">
@@ -54,9 +54,9 @@
                         Accéder à mon espace
                     </a>
                 @else
-                    {{-- <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition shadow-lg">
+                    <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition shadow-lg">
                         Commencer gratuitement
-                    </a> --}}
+                    </a>
                     <a href="{{ route('login') }}" class="bg-white text-indigo-600 border border-indigo-200 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-50 transition shadow-sm">
                         Se connecter
                     </a>
