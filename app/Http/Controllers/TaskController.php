@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Models\Team;
+use App\Models\User;
+use App\Mail\TaskAssignedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class TaskController extends Controller
@@ -101,8 +104,16 @@ class TaskController extends Controller
         $task->active = $wantsActive && $task->canBeActive();
         $task->save();
 
+        // Envoyer un email à l'utilisateur assigné
+        $assignedUser = User::find($validated['user_id']);
+        if ($assignedUser) {
+            Mail::to($assignedUser->email)->send(
+                new TaskAssignedNotification($task, Auth::user())
+            );
+        }
+
         return redirect()->route('tasks.index')
-            ->with('success', 'Tâche créée avec succès et assignée au salarié.');
+            ->with('success', 'Tâche créée avec succès et assignée au salarié. Un email de notification a été envoyé.');
     }
 
     public function edit(Task $task): View
@@ -173,7 +184,11 @@ class TaskController extends Controller
             'start_at' => $validated['start_at'] ?? null,
         ]);
 
-        $task->users()->sync([$validated['user_id']]);
+        // Vérifier si l'utilisateur assigné a changé
+        $previousUserId = $task->users()->first()?->id;
+        $newUserId = $validated['user_id'];
+
+        $task->users()->sync([$newUserId]);
 
         $task->refresh();
 
@@ -181,8 +196,18 @@ class TaskController extends Controller
         $task->active = $wantsActive && $task->canBeActive();
         $task->save();
 
+        // Envoyer un email si l'utilisateur assigné a changé
+        if ($previousUserId !== $newUserId) {
+            $assignedUser = User::find($newUserId);
+            if ($assignedUser) {
+                Mail::to($assignedUser->email)->send(
+                    new TaskAssignedNotification($task, Auth::user())
+                );
+            }
+        }
+
         return redirect()->route('tasks.index')
-            ->with('success', 'Tâche mise à jour avec succès.');
+            ->with('success', 'Tâche mise à jour avec succès.' . ($previousUserId !== $newUserId ? ' Un email de notification a été envoyé.' : ''));
     }
 
     public function deactivate(Task $task): RedirectResponse
