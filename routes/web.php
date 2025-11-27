@@ -49,8 +49,11 @@ Route::middleware(['auth', 'manager'])->group(function () {
 use App\Mail\TestEmail;
 
 Route::get('/test-email', function () {
-    Illuminate\Support\Facades\Mail::to('test@example.com')->send(new TestEmail());
-    return 'Email envoyé ! Vérifiez storage/logs/laravel.log';
+    $user = \App\Models\User::first() ?? new \App\Models\User(['name' => 'Jean Dupont']);
+    $task = \App\Models\Task::first() ?? new \App\Models\Task(['name' => 'Développement Feature X']);
+
+    Illuminate\Support\Facades\Mail::to('test@example.com')->send(new TestEmail($task, $user));
+    return 'Email envoyé ! Vérifiez votre boîte mail (Mailtrap).';
 });
 
 require __DIR__.'/auth.php';

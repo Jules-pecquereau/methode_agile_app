@@ -13,12 +13,16 @@ class TestEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $task;
+    public $user;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($task, $user)
     {
-        //
+        $this->task = $task;
+        $this->user = $user;
     }
 
     /**
@@ -27,7 +31,7 @@ class TestEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Test Email',
+            subject: 'Validation de tâche - ' . $this->task->name,
         );
     }
 

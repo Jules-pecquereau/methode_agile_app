@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test Email</title>
+    <title>Validation de tâche</title>
 </head>
 <body>
-    <h1>Ceci est un email de test</h1>
-    <p>Si vous recevez cet email, cela signifie que la configuration d'envoi d'emails fonctionne correctement.</p>
+    <h1>Tâche validée</h1>
+    <p>La tâche <strong>{{ $task->name }}</strong> a été validée par le salarié <strong>{{ $user->name }}</strong>.</p>
 </body>
 </html>
