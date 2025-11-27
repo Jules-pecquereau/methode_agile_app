@@ -46,6 +46,13 @@ Route::middleware(['auth', 'manager'])->group(function () {
     Route::patch('tasks/{task}/deactivate', [TaskController::class, 'deactivate'])->name('tasks.deactivate');
 });
 
+use App\Mail\TestEmail;
+
+Route::get('/test-email', function () {
+    Illuminate\Support\Facades\Mail::to('test@example.com')->send(new TestEmail());
+    return 'Email envoyé ! Vérifiez storage/logs/laravel.log';
+});
+
 require __DIR__.'/auth.php';
 
 
