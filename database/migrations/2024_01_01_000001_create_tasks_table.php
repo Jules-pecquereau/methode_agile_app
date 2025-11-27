@@ -14,6 +14,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedInteger('expected_minutes');
             $table->boolean('active')->default(false);
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
