@@ -95,32 +95,26 @@
                         </script>
 
                         <div class="mb-4">
-                            <label class="form-label fw-bold">
-                                Équipes associées <span class="text-danger">*</span>
+                            <label for="user_id" class="form-label fw-bold">
+                                Assigner au salarié <span class="text-danger">*</span>
                             </label>
-                            <div class="border rounded p-3 bg-light">
-                                @forelse($teams as $team)
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input"
-                                               type="checkbox"
-                                               name="teams[]"
-                                               value="{{ $team->id }}"
-                                               id="team_{{ $team->id }}"
-                                               {{ in_array($team->id, old('teams', [])) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="team_{{ $team->id }}">
-                                            <i class="bi bi-people-fill text-info"></i> {{ $team->name }}
-                                        </label>
-                                    </div>
-                                @empty
-                                    <div class="alert alert-warning mb-0" role="alert">
-                                        <i class="bi bi-exclamation-triangle"></i>
-                                        Aucune équipe disponible. Veuillez créer des équipes d'abord.
-                                    </div>
-                                @endforelse
-                            </div>
+                            <select class="form-select @error('user_id') is-invalid @enderror"
+                                    id="user_id"
+                                    name="user_id"
+                                    required>
+                                <option value="" selected disabled>Choisir un salarié...</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }} ({{ $user->email }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('user_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                             <div class="alert alert-info mt-2 mb-0" role="alert">
                                 <i class="bi bi-info-circle"></i>
-                                <strong>Important :</strong> Si aucune équipe n'est cochée, la tâche sera automatiquement inactive.
+                                <strong>Note :</strong> La tâche sera assignée aux équipes dont fait partie ce salarié.
                             </div>
                         </div>
 
@@ -141,7 +135,7 @@
                                     </div>
                                     <small class="text-muted d-block mt-2">
                                         <i class="bi bi-info-circle"></i>
-                                        La tâche ne sera active que si au moins une équipe est sélectionnée.
+                                        La tâche ne sera active que si le salarié appartient à au moins une équipe.
                                     </small>
                                 </div>
                             </div>

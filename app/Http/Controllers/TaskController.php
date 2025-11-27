@@ -31,9 +31,9 @@ class TaskController extends Controller
 
     public function create(): View
     {
-        $teams = Team::orderBy('name')->get();
+        $users = \App\Models\User::where('role', '!=', 'manager')->orderBy('name')->get();
 
-        return view('tasks.create', compact('teams'));
+        return view('tasks.create', compact('users'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -51,20 +51,22 @@ class TaskController extends Controller
                     }
                 },
             ],
-            'teams' => 'array',
-            'teams.*' => 'exists:teams,id',
+            'user_id' => 'required|exists:users,id',
             'active' => 'boolean',
         ]);
 
+        $user = \App\Models\User::with('teams')->findOrFail($validated['user_id']);
+        $teamIds = $user->teams->pluck('id')->toArray();
+
         // Vérification des conflits de planning
-        if (!empty($validated['start_at']) && !empty($validated['teams'])) {
+        if (!empty($validated['start_at']) && !empty($teamIds)) {
             $newTask = new Task([
                 'start_at' => $validated['start_at'],
                 'expected_minutes' => $validated['expected_minutes'],
             ]);
             $newSegments = $newTask->getTimeSegments();
 
-            foreach ($validated['teams'] as $teamId) {
+            foreach ($teamIds as $teamId) {
                 $team = Team::find($teamId);
                 // Récupérer les tâches actives de l'équipe qui ont une date de début
                 $existingTasks = $team->tasks()
@@ -80,7 +82,7 @@ class TaskController extends Controller
                                 $newSegment['end']->gt($existingSegment['start'])) {
 
                                 return back()->withErrors([
-                                    'start_at' => "Conflit de planning pour l'équipe {$team->name}. Elle est déjà occupée par la tâche '{$existingTask->name}' sur cette période."
+                                    'start_at' => "Conflit de planning pour l'équipe {$team->name} (du salarié {$user->name}). Elle est déjà occupée par la tâche '{$existingTask->name}' sur cette période."
                                 ])->withInput();
                             }
                         }
@@ -97,8 +99,8 @@ class TaskController extends Controller
             'active' => false,
         ]);
 
-        if (! empty($validated['teams'])) {
-            $task->teams()->sync($validated['teams']);
+        if (! empty($teamIds)) {
+            $task->teams()->sync($teamIds);
         }
 
         $wantsActive = $request->boolean('active');
@@ -106,7 +108,7 @@ class TaskController extends Controller
         $task->save();
 
         return redirect()->route('tasks.index')
-            ->with('success', 'Tâche créée avec succès.');
+            ->with('success', 'Tâche créée avec succès et assignée aux équipes du salarié.');
     }
 
     public function edit(Task $task): View
