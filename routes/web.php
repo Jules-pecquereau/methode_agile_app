@@ -10,12 +10,15 @@ Route::get('/', function () {
     return view('index');
 })->middleware(['auth'])->name('home');
 
+use App\Http\Controllers\EmployeeTaskController;
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('users', UserController::class);
+    Route::get('/my-tasks', [EmployeeTaskController::class, 'index'])->name('employee.tasks.index');
 });
 
 // Route::middleware(['manager'])->group(function () {
