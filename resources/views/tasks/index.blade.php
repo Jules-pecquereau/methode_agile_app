@@ -55,11 +55,11 @@
                             </td>
                             <td>{{ $task->expected_minutes }} min</td>
                             <td>
-                                @foreach($task->teams as $team)
-                                    <span class="badge bg-info">{{ $team->name }}</span>
+                                @foreach($task->users as $user)
+                                    <span class="badge bg-info">{{ $user->name }}</span>
                                 @endforeach
-                                @if($task->teams->isEmpty())
-                                    <span class="text-muted">Aucune</span>
+                                @if($task->users->isEmpty())
+                                    <span class="text-muted">Aucun</span>
                                 @endif
                             </td>
                             <td>

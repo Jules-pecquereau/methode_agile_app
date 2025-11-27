@@ -51,16 +51,16 @@ class Task extends Model
     public $timestamps = true;
 
     /**
-     * @return BelongsToMany<Team, $this>
+     * @return BelongsToMany<User, $this>
      */
-    public function teams(): BelongsToMany
+    public function users(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class)->withPivot(['start_date', 'end_date']);
+        return $this->belongsToMany(User::class, 'task_user')->withPivot(['start_date', 'end_date', 'completed_at']);
     }
 
     public function canBeActive(): bool
     {
-        return $this->teams()->count() > 0;
+        return $this->users()->count() > 0;
     }
 
     public function getCreatedAtAttribute(mixed $value): Carbon

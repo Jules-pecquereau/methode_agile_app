@@ -12,7 +12,7 @@ class TaskController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Task::with('teams')->latest();
+        $query = Task::with('users')->latest();
 
         if ($request->has('status')) {
             if ($request->status === 'active') {
@@ -55,36 +55,32 @@ class TaskController extends Controller
             'active' => 'boolean',
         ]);
 
-        $user = \App\Models\User::with('teams')->findOrFail($validated['user_id']);
-        $teamIds = $user->teams->pluck('id')->toArray();
+        $user = \App\Models\User::with('tasks')->findOrFail($validated['user_id']);
 
         // Vérification des conflits de planning
-        if (!empty($validated['start_at']) && !empty($teamIds)) {
+        if (!empty($validated['start_at'])) {
             $newTask = new Task([
                 'start_at' => $validated['start_at'],
                 'expected_minutes' => $validated['expected_minutes'],
             ]);
             $newSegments = $newTask->getTimeSegments();
 
-            foreach ($teamIds as $teamId) {
-                $team = Team::find($teamId);
-                // Récupérer les tâches actives de l'équipe qui ont une date de début
-                $existingTasks = $team->tasks()
-                    ->where('active', true)
-                    ->whereNotNull('start_at')
-                    ->get();
+            // Récupérer les tâches actives de l'utilisateur qui ont une date de début
+            $existingTasks = $user->tasks()
+                ->where('active', true)
+                ->whereNotNull('start_at')
+                ->get();
 
-                foreach ($existingTasks as $existingTask) {
-                    foreach ($existingTask->getTimeSegments() as $existingSegment) {
-                        foreach ($newSegments as $newSegment) {
-                            // Vérifier le chevauchement
-                            if ($newSegment['start']->lt($existingSegment['end']) &&
-                                $newSegment['end']->gt($existingSegment['start'])) {
+            foreach ($existingTasks as $existingTask) {
+                foreach ($existingTask->getTimeSegments() as $existingSegment) {
+                    foreach ($newSegments as $newSegment) {
+                        // Vérifier le chevauchement
+                        if ($newSegment['start']->lt($existingSegment['end']) &&
+                            $newSegment['end']->gt($existingSegment['start'])) {
 
-                                return back()->withErrors([
-                                    'start_at' => "Conflit de planning pour l'équipe {$team->name} (du salarié {$user->name}). Elle est déjà occupée par la tâche '{$existingTask->name}' sur cette période."
-                                ])->withInput();
-                            }
+                            return back()->withErrors([
+                                'start_at' => "Conflit de planning pour le salarié {$user->name}. Il est déjà occupé par la tâche '{$existingTask->name}' sur cette période."
+                            ])->withInput();
                         }
                     }
                 }
@@ -99,23 +95,21 @@ class TaskController extends Controller
             'active' => false,
         ]);
 
-        if (! empty($teamIds)) {
-            $task->teams()->sync($teamIds);
-        }
+        $task->users()->attach($validated['user_id']);
 
         $wantsActive = $request->boolean('active');
         $task->active = $wantsActive && $task->canBeActive();
         $task->save();
 
         return redirect()->route('tasks.index')
-            ->with('success', 'Tâche créée avec succès et assignée aux équipes du salarié.');
+            ->with('success', 'Tâche créée avec succès et assignée au salarié.');
     }
 
     public function edit(Task $task): View
     {
-        $teams = Team::orderBy('name')->get();
+        $users = \App\Models\User::where('role', '!=', 'manager')->orderBy('name')->get();
 
-        return view('tasks.edit', compact('task', 'teams'));
+        return view('tasks.edit', compact('task', 'users'));
     }
 
     public function update(Request $request, Task $task): RedirectResponse
@@ -133,13 +127,14 @@ class TaskController extends Controller
                     }
                 },
             ],
-            'teams' => 'array',
-            'teams.*' => 'exists:teams,id',
+            'user_id' => 'required|exists:users,id',
             'active' => 'boolean',
         ]);
 
+        $user = \App\Models\User::with('tasks')->findOrFail($validated['user_id']);
+
         // Vérification des conflits de planning
-        if (!empty($validated['start_at']) && !empty($validated['teams'])) {
+        if (!empty($validated['start_at'])) {
             // On simule la tâche avec les nouvelles valeurs pour calculer les segments
             $tempTask = new Task([
                 'start_at' => $validated['start_at'],
@@ -147,27 +142,24 @@ class TaskController extends Controller
             ]);
             $newSegments = $tempTask->getTimeSegments();
 
-            foreach ($validated['teams'] as $teamId) {
-                $team = Team::find($teamId);
-                // Récupérer les tâches actives de l'équipe qui ont une date de début
-                // EXCLURE la tâche actuelle ($task->id)
-                $existingTasks = $team->tasks()
-                    ->where('active', true)
-                    ->whereNotNull('start_at')
-                    ->where('tasks.id', '!=', $task->id)
-                    ->get();
+            // Récupérer les tâches actives de l'utilisateur qui ont une date de début
+            // EXCLURE la tâche actuelle ($task->id)
+            $existingTasks = $user->tasks()
+                ->where('active', true)
+                ->whereNotNull('start_at')
+                ->where('tasks.id', '!=', $task->id)
+                ->get();
 
-                foreach ($existingTasks as $existingTask) {
-                    foreach ($existingTask->getTimeSegments() as $existingSegment) {
-                        foreach ($newSegments as $newSegment) {
-                            // Vérifier le chevauchement
-                            if ($newSegment['start']->lt($existingSegment['end']) &&
-                                $newSegment['end']->gt($existingSegment['start'])) {
+            foreach ($existingTasks as $existingTask) {
+                foreach ($existingTask->getTimeSegments() as $existingSegment) {
+                    foreach ($newSegments as $newSegment) {
+                        // Vérifier le chevauchement
+                        if ($newSegment['start']->lt($existingSegment['end']) &&
+                            $newSegment['end']->gt($existingSegment['start'])) {
 
-                                return back()->withErrors([
-                                    'start_at' => "Conflit de planning pour l'équipe {$team->name}. Elle est déjà occupée par la tâche '{$existingTask->name}' sur cette période."
-                                ])->withInput();
-                            }
+                            return back()->withErrors([
+                                'start_at' => "Conflit de planning pour le salarié {$user->name}. Il est déjà occupé par la tâche '{$existingTask->name}' sur cette période."
+                            ])->withInput();
                         }
                     }
                 }
@@ -181,7 +173,7 @@ class TaskController extends Controller
             'start_at' => $validated['start_at'] ?? null,
         ]);
 
-        $task->teams()->sync($validated['teams'] ?? []);
+        $task->users()->sync([$validated['user_id']]);
 
         $task->refresh();
 

@@ -34,18 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/calendar/schedule', [CalendarController::class, 'schedule'])->name('calendar.schedule');
 // });
 
-Route::get('/debug-calendar', function () {
-    $teams = App\Models\Team::with('tasks')->get();
-    return $teams->map(function($team) {
-        return $team->tasks->map(function($task) {
-            return [
-                'task_name' => $task->name,
-                'pivot' => $task->pivot
-            ];
-        });
-    });
-});
-
 Route::middleware(['auth', 'manager'])->group(function () {
     Route::resource('tasks', TaskController::class)->except(['destroy', 'show']);
     Route::patch('tasks/{task}/deactivate', [TaskController::class, 'deactivate'])->name('tasks.deactivate');

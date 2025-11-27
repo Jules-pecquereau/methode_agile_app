@@ -37,7 +37,6 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>Tâche</th>
-                                        <th>Équipes</th>
                                         <th>Début</th>
                                         <th>Durée</th>
                                         <th>Description</th>
@@ -51,13 +50,6 @@
                                                 <a href="{{ route('employee.tasks.show', $task) }}" class="text-decoration-none text-dark">
                                                     {{ $task->name }}
                                                 </a>
-                                            </td>
-                                            <td>
-                                                @foreach($task->teams as $team)
-                                                    <span class="badge bg-info text-dark me-1">
-                                                        {{ $team->name }}
-                                                    </span>
-                                                @endforeach
                                             </td>
                                             <td>
                                                 {{ $task->start_at ? $task->start_at->format('d/m/Y H:i') : '-' }}

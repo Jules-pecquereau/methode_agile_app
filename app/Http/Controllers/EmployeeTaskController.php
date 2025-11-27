@@ -13,17 +13,10 @@ class EmployeeTaskController extends Controller
     {
         $user = Auth::user();
 
-        // Récupérer les IDs des équipes de l'utilisateur
-        $teamIds = $user->teams->pluck('id');
-
-        // Récupérer les tâches associées à ces équipes (seulement les non terminées)
-        $tasks = Task::whereHas('teams', function ($query) use ($teamIds) {
-            $query->whereIn('teams.id', $teamIds);
-        })
-        ->whereNull('completed_at')
-        ->with(['teams' => function($query) use ($teamIds) {
-            $query->whereIn('teams.id', $teamIds);
-        }])->get();
+        // Récupérer les tâches associées à l'utilisateur (seulement les non terminées par l'utilisateur)
+        $tasks = $user->tasks()
+            ->whereNull('task_user.completed_at')
+            ->get();
 
         // Préparer les événements pour le calendrier
         $events = [];
@@ -47,11 +40,10 @@ class EmployeeTaskController extends Controller
 
     public function show(Task $task): View
     {
-        // Vérifier si l'utilisateur a le droit de voir cette tâche (si elle appartient à une de ses équipes)
+        // Vérifier si l'utilisateur a le droit de voir cette tâche
         $user = Auth::user();
-        $teamIds = $user->teams->pluck('id');
 
-        $hasAccess = $task->teams()->whereIn('teams.id', $teamIds)->exists();
+        $hasAccess = $task->users()->where('users.id', $user->id)->exists();
 
         if (!$hasAccess) {
             abort(403, 'Vous n\'avez pas accès à cette tâche.');

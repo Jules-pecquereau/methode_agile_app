@@ -39,12 +39,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h5 class="text-muted mb-3">Équipes assignées</h5>
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach($task->teams as $team)
-                                    <span class="badge bg-info text-dark fs-6">{{ $team->name }}</span>
-                                @endforeach
-                            </div>
+                            <!-- Section removed as tasks are now assigned to users directly -->
                         </div>
                     </div>
 

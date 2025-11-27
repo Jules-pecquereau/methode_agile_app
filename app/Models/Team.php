@@ -30,14 +30,6 @@ class Team extends Model
     protected $fillable = ['name'];
 
     /**
-     * @return BelongsToMany<Task, $this>
-     */
-    public function tasks(): BelongsToMany
-    {
-        return $this->belongsToMany(Task::class)->withPivot(['start_date', 'end_date']);
-    }
-
-    /**
      * The users that belong to the team.
      */
     public function users(): BelongsToMany

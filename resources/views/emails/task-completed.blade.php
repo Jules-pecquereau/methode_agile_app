@@ -95,13 +95,6 @@
                 <span class="label">Terminée le :</span>
                 {{ $task->completed_at ? $task->completed_at->format('d/m/Y à H:i') : now()->format('d/m/Y à H:i') }}
             </div>
-
-            <div class="info-row">
-                <span class="label">Équipes :</span><br>
-                @foreach($task->teams as $team)
-                    <span class="badge">{{ $team->name }}</span>
-                @endforeach
-            </div>
         </div>
 
         <p>Cordialement,<br>
