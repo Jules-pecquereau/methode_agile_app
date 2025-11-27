@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
         <h1>Gestion des Tâches</h1>
         <a href="{{ route('tasks.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Nouvelle Tâche
@@ -32,7 +32,7 @@
                         <th>Nom</th>
                         <th>Début</th>
                         <th>Durée estimée</th>
-                        <th>Équipes</th>
+                        <th>Salarié</th>
                         <th>Statut</th>
                         <th class="text-end">Actions</th>
                     </tr>
